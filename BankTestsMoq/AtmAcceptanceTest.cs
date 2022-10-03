@@ -1,7 +1,7 @@
-using Atm;
+using AtmSystem;
 using Moq;
 
-namespace BankTests;
+namespace BankTestsMoq;
 
 public class AtmAcceptanceTest
 {
@@ -9,14 +9,16 @@ public class AtmAcceptanceTest
     public void WithTwoDepositsAndAWithdrawPrintProperlyFormattedStatement()
     {
         Mock<IPrinter> mockPrinter = new Mock<IPrinter>();
-        Atm.Atm atm = new Atm.Atm(mockPrinter.Object);
+        Mock<ICalendar> mockCalendar = new Mock<ICalendar>();
+        ITransactionRepository repository = new InMemoryRepository();
+        AtmSystem.Atm atm = new AtmSystem.Atm(mockPrinter.Object, repository, mockCalendar.Object);
 
         atm.Deposit(1000);
         atm.Deposit(2000);
         atm.Withdraw(500);
 
         atm.PrintStatement();
-        mockPrinter.Verify(mock => mock.PrintStatement(
+        mockPrinter.Verify(mock => mock.Print(
             "Date || Amount || Balance \n" +
             "14/01/2012 || -500 || 2500 \n" +
             "13/01/2012 || 2000 || 3000 \n" +

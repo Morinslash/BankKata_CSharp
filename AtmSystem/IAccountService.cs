@@ -1,4 +1,4 @@
-namespace Atm;
+namespace AtmSystem;
 
 public interface IAccountService
 {

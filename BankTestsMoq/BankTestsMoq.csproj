@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Atm\Atm.csproj" />
+      <ProjectReference Include="..\AtmSystem\AtmSystem.csproj" />
     </ItemGroup>
 
 </Project>
