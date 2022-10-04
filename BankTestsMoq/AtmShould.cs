@@ -2,33 +2,49 @@ using AtmSystem;
 using AtmSystem.Calendars;
 using AtmSystem.Printers;
 using AtmSystem.TransactionRepositories;
+using FluentAssertions;
 using Moq;
 
 namespace BankTestsMoq;
 
 public class AtmShould
 {
+    private readonly string _transactionDate = "14/01/2012";
+    private readonly Mock<IPrinter> _printer;
+    private readonly Mock<ICalendar> _mockCalendar;
+    private readonly Mock<ITransactionRepository> _mockRepository;
+    private readonly Atm _atm;
+
+    public AtmShould()
+    {
+        _printer = new Mock<IPrinter>();
+        _mockCalendar = new Mock<ICalendar>();
+        _mockRepository = new Mock<ITransactionRepository>();
+        _atm = new Atm(_printer.Object, _mockRepository.Object, _mockCalendar.Object);
+    }
+
     [Fact]
     public void Deposit_100_With_The_Repository()
     {
-        var transactionDate = "14/01/2012";
         BankTransaction expectedBankTransaction = new BankTransaction
         {
             Amount = 100,
-            TransactionDate = transactionDate
+            TransactionDate = _transactionDate
         };
-        Mock<IPrinter> printer = new Mock<IPrinter>();
-        Mock<ICalendar> mockCalendar = new Mock<ICalendar>();
-        mockCalendar
+        _mockCalendar
             .Setup(calendar => calendar.TransactionDate())
-            .Returns(transactionDate);
-        Mock<ITransactionRepository> mockRepository = new Mock<ITransactionRepository>();
+            .Returns(_transactionDate);
 
-        var atm = new Atm(printer.Object, mockRepository.Object, mockCalendar.Object);
+        _atm.Deposit(100);
 
-        atm.Deposit(100);
-
-        mockRepository.Verify(mock => mock.Save(
+        _mockRepository.Verify(mock => mock.Save(
             It.Is<BankTransaction>(ex => ex.Equals(expectedBankTransaction))), Times.Once);
+    }
+
+    [Fact]
+    public void Not_Accept_Negative_Amount_Of_Deposit()
+    {
+        Action act = () => _atm.Deposit(-100);
+        act.Should().Throw<ArgumentException>().WithMessage("Deposit cannot be negative.");
     }
 }

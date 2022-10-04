@@ -19,6 +19,10 @@ public class Atm : IAccountService
 
     public void Deposit(int amount)
     {
+        if (amount < 0)
+        {
+            throw new ArgumentException("Deposit cannot be negative.");
+        }
         var bankTransaction = new BankTransaction
         {
             Amount = amount,
