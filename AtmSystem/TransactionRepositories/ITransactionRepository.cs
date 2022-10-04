@@ -1,4 +1,4 @@
-namespace AtmSystem;
+namespace AtmSystem.TransactionRepositories;
 
 public interface ITransactionRepository
 {

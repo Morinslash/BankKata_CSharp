@@ -1,4 +1,6 @@
-using AtmSystem;
+using AtmSystem.Calendars;
+using AtmSystem.Printers;
+using AtmSystem.TransactionRepositories;
 using Moq;
 
 namespace BankTestsMoq;

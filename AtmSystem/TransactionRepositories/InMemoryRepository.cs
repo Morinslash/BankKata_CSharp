@@ -1,6 +1,4 @@
-using System.Transactions;
-
-namespace AtmSystem;
+namespace AtmSystem.TransactionRepositories;
 
 public class InMemoryRepository : ITransactionRepository
 {

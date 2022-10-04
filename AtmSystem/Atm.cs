@@ -1,4 +1,8 @@
-﻿namespace AtmSystem;
+﻿using AtmSystem.Calendars;
+using AtmSystem.Printers;
+using AtmSystem.TransactionRepositories;
+
+namespace AtmSystem;
 
 public class Atm : IAccountService
 {

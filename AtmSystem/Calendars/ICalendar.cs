@@ -1,4 +1,4 @@
-namespace AtmSystem;
+namespace AtmSystem.Calendars;
 
 public interface ICalendar
 {

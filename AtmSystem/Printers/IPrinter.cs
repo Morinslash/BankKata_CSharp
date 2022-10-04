@@ -1,4 +1,4 @@
-namespace AtmSystem;
+namespace AtmSystem.Printers;
 
 public interface IPrinter
 {
