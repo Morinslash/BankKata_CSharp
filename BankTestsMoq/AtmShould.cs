@@ -45,6 +45,30 @@ public class AtmShould
     public void Not_Accept_Negative_Amount_Of_Deposit()
     {
         Action act = () => _atm.Deposit(-100);
-        act.Should().Throw<ArgumentException>().WithMessage("Deposit cannot be negative.");
+        act.Should().Throw<ArgumentException>().WithMessage("Amount cannot be negative.");
+    }
+
+    [Fact]
+    public void Should_Withdraw_100_From_Account()
+    {
+        BankTransaction expectedBankTransaction = new BankTransaction
+        {
+            Amount = -100,
+            TransactionDate = _transactionDate
+        };
+        _mockCalendar
+            .Setup(calendar => calendar.TransactionDate())
+            .Returns(_transactionDate);
+
+        _atm.Withdraw(100);
+
+        _mockRepository.Verify(mock => mock.Save(
+            It.Is<BankTransaction>(ex => ex.Equals(expectedBankTransaction))), Times.Once);
+    }
+    [Fact]
+    public void Not_Accept_Negative_Amount_For_Withdraw()
+    {
+        Action act = () => _atm.Withdraw(-100);
+        act.Should().Throw<ArgumentException>().WithMessage("Amount cannot be negative.");
     }
 }

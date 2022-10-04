@@ -21,7 +21,7 @@ public class Atm : IAccountService
     {
         if (amount < 0)
         {
-            throw new ArgumentException("Deposit cannot be negative.");
+            throw new ArgumentException("Amount cannot be negative.");
         }
         var bankTransaction = new BankTransaction
         {
@@ -33,7 +33,16 @@ public class Atm : IAccountService
 
     public void Withdraw(int amount)
     {
-        throw new NotImplementedException();
+        if (amount < 0)
+        {
+            throw new ArgumentException("Amount cannot be negative.");
+        }
+        var bankTransaction = new BankTransaction
+        {
+            Amount = -amount,
+            TransactionDate = _accountCalendar.TransactionDate()
+        };
+        _transactionRepository.Save(bankTransaction);
     }
 
     public void PrintStatement()
