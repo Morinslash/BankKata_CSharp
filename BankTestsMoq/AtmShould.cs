@@ -84,4 +84,20 @@ public class AtmShould
         _printer.Verify(mock => mock.Print(
             It.Is<IEnumerable<BankTransaction>>(list => !list.Any())), Times.Once());
     }
+
+    [Fact]
+    public void Display_One_Deposit_As_One_Was_Made()
+    {
+        var bankTransactions = new List<BankTransaction>()
+        {
+            new BankTransaction(){Amount = 100, TransactionDate = _transactionDate}
+        };
+        _mockRepository.Setup(mock => mock.GetTransactions())
+            .Returns(bankTransactions);
+        _atm.PrintStatement();
+        
+        _printer.Verify(mock => mock.Print(
+            It.Is<IEnumerable<BankTransaction>>(
+                list => list.Count() == 1)), Times.Once);
+    }
 }
