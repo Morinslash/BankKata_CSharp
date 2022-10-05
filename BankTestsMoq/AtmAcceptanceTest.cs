@@ -20,7 +20,7 @@ public class AtmAcceptanceTest
         atm.Withdraw(500);
 
         atm.PrintStatement();
-        mockPrinter.Verify(mock => mock.Print(
+        mockPrinter.Verify(mock => mock.Display(
             "Date || Amount || Balance \n" +
             "14/01/2012 || -500 || 2500 \n" +
             "13/01/2012 || 2000 || 3000 \n" +

@@ -2,5 +2,6 @@ namespace AtmSystem.Printers;
 
 public interface IPrinter
 {
-    void Print(string output);
+    void Display(string output);
+    void Print(IEnumerable<BankTransaction> bankTransactions);
 }

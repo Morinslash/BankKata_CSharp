@@ -19,34 +19,35 @@ public class Atm : IAccountService
 
     public void Deposit(int amount)
     {
-        if (amount < 0)
-        {
-            throw new ArgumentException("Amount cannot be negative.");
-        }
-        var bankTransaction = new BankTransaction
-        {
-            Amount = amount,
-            TransactionDate = _accountCalendar.TransactionDate()
-        };
-        _transactionRepository.Save(bankTransaction);
+        NegativeAmountGuard(amount);
+        _transactionRepository.Save(CreateTransaction(amount));
     }
 
     public void Withdraw(int amount)
     {
-        if (amount < 0)
-        {
-            throw new ArgumentException("Amount cannot be negative.");
-        }
-        var bankTransaction = new BankTransaction
-        {
-            Amount = -amount,
-            TransactionDate = _accountCalendar.TransactionDate()
-        };
-        _transactionRepository.Save(bankTransaction);
+        NegativeAmountGuard(amount);
+        _transactionRepository.Save(CreateTransaction(-amount));
     }
 
     public void PrintStatement()
     {
-        throw new NotImplementedException();
+        _printer.Print(_transactionRepository.GetTransactions());
+    }
+
+    private void NegativeAmountGuard(int amount)
+    {
+        if (amount < 0)
+        {
+            throw new ArgumentException("Amount cannot be negative.");
+        }
+    }
+
+    private BankTransaction CreateTransaction(int amountToStore)
+    {
+        return new BankTransaction()
+        {
+            Amount = amountToStore,
+            TransactionDate = _accountCalendar.TransactionDate()
+        };
     }
 }

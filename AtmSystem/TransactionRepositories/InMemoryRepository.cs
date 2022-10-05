@@ -7,4 +7,9 @@ public class InMemoryRepository : ITransactionRepository
     {
         _transactions.Add(newBankTransaction);
     }
+
+    public IEnumerable<BankTransaction> GetTransactions()
+    {
+        return _transactions.AsReadOnly();
+    }
 }

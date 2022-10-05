@@ -69,6 +69,19 @@ public class AtmShould
     public void Not_Accept_Negative_Amount_For_Withdraw()
     {
         Action act = () => _atm.Withdraw(-100);
-        act.Should().Throw<ArgumentException>().WithMessage("Amount cannot be negative.");
+        act.Should().Throw<ArgumentException>()
+            .WithMessage("Amount cannot be negative.");
+    }
+
+    [Fact]
+    public void Call_Printer_With_Empty_List_Of_Transactions_If_Non_Done()
+    {
+        var bankTransactions = new List<BankTransaction>();
+        _mockRepository.Setup(mock => mock.GetTransactions())
+            .Returns(bankTransactions);
+        _atm.PrintStatement();
+        
+        _printer.Verify(mock => mock.Print(
+            It.Is<IEnumerable<BankTransaction>>(list => !list.Any())), Times.Once());
     }
 }
