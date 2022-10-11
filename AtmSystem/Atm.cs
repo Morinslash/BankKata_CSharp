@@ -6,13 +6,13 @@ namespace AtmSystem;
 
 public class Atm : IAccountService
 {
-    private readonly IPrinter _printer;
+    private readonly IStatementFormatter _formatter;
     private readonly ITransactionRepository _transactionRepository;
     private readonly ICalendar _accountCalendar;
 
-    public Atm(IPrinter printer, ITransactionRepository transactionRepository, ICalendar accountCalendar)
+    public Atm(IStatementFormatter formatter, ITransactionRepository transactionRepository, ICalendar accountCalendar)
     {
-        _printer = printer;
+        _formatter = formatter;
         _transactionRepository = transactionRepository;
         _accountCalendar = accountCalendar;
     }
@@ -31,7 +31,7 @@ public class Atm : IAccountService
 
     public void PrintStatement()
     {
-        _printer.Print(_transactionRepository.GetTransactions());
+        _formatter.Print(_transactionRepository.GetTransactions());
     }
 
     private void NegativeAmountGuard(int amount)

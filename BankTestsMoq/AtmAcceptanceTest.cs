@@ -1,3 +1,4 @@
+using AtmSystem;
 using AtmSystem.Calendars;
 using AtmSystem.Printers;
 using AtmSystem.TransactionRepositories;
@@ -13,14 +14,15 @@ public class AtmAcceptanceTest
         Mock<IPrinter> mockPrinter = new Mock<IPrinter>();
         Mock<ICalendar> mockCalendar = new Mock<ICalendar>();
         ITransactionRepository repository = new InMemoryRepository();
-        AtmSystem.Atm atm = new AtmSystem.Atm(mockPrinter.Object, repository, mockCalendar.Object);
+        var statementFormatter = new AtmFormatter(mockPrinter.Object);
+        var atm = new Atm(statementFormatter, repository, mockCalendar.Object);
 
         atm.Deposit(1000);
         atm.Deposit(2000);
         atm.Withdraw(500);
 
         atm.PrintStatement();
-        mockPrinter.Verify(mock => mock.Display(
+        mockPrinter.Verify(mock => mock.Print(
             "Date || Amount || Balance \n" +
             "14/01/2012 || -500 || 2500 \n" +
             "13/01/2012 || 2000 || 3000 \n" +

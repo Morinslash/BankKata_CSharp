@@ -1,6 +1,5 @@
 using AtmSystem;
 using AtmSystem.Calendars;
-using AtmSystem.Printers;
 using AtmSystem.TransactionRepositories;
 using FluentAssertions;
 using Moq;
@@ -10,17 +9,17 @@ namespace BankTestsMoq;
 public class AtmShould
 {
     private readonly string _transactionDate = "14/01/2012";
-    private readonly Mock<IPrinter> _printer;
     private readonly Mock<ICalendar> _mockCalendar;
     private readonly Mock<ITransactionRepository> _mockRepository;
     private readonly Atm _atm;
+    private Mock<IStatementFormatter> _statementFormatter;
 
     public AtmShould()
     {
-        _printer = new Mock<IPrinter>();
         _mockCalendar = new Mock<ICalendar>();
         _mockRepository = new Mock<ITransactionRepository>();
-        _atm = new Atm(_printer.Object, _mockRepository.Object, _mockCalendar.Object);
+        _statementFormatter = new Mock<IStatementFormatter>();
+        _atm = new Atm(_statementFormatter.Object, _mockRepository.Object, _mockCalendar.Object);
     }
 
     [Fact]
@@ -74,14 +73,14 @@ public class AtmShould
     }
 
     [Fact]
-    public void Call_Printer_With_Empty_List_Of_Transactions_If_Non_Done()
+    public void Call_Formatter_With_Empty_List_Of_Transactions_If_Non_Done()
     {
         var bankTransactions = new List<BankTransaction>();
         _mockRepository.Setup(mock => mock.GetTransactions())
             .Returns(bankTransactions);
         _atm.PrintStatement();
         
-        _printer.Verify(mock => mock.Print(
+        _statementFormatter.Verify(mock => mock.Print(
             It.Is<IEnumerable<BankTransaction>>(list => !list.Any())), Times.Once());
     }
 
@@ -96,7 +95,7 @@ public class AtmShould
             .Returns(bankTransactions);
         _atm.PrintStatement();
         
-        _printer.Verify(mock => mock.Print(
+        _statementFormatter.Verify(mock => mock.Print(
             It.Is<IEnumerable<BankTransaction>>(
                 list => list.Count() == 1)), Times.Once);
     }
