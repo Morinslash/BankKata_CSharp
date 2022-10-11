@@ -1,5 +1,6 @@
 using AtmSystem;
 using AtmSystem.Calendars;
+using AtmSystem.Formatters;
 using AtmSystem.TransactionRepositories;
 using FluentAssertions;
 using Moq;
@@ -11,8 +12,8 @@ public class AtmShould
     private readonly string _transactionDate = "14/01/2012";
     private readonly Mock<ICalendar> _mockCalendar;
     private readonly Mock<ITransactionRepository> _mockRepository;
+    private readonly Mock<IStatementFormatter> _statementFormatter;
     private readonly Atm _atm;
-    private Mock<IStatementFormatter> _statementFormatter;
 
     public AtmShould()
     {

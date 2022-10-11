@@ -1,4 +1,4 @@
-namespace AtmSystem;
+namespace AtmSystem.Formatters;
 
 public interface IStatementFormatter
 {

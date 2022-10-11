@@ -1,5 +1,6 @@
 using AtmSystem;
 using AtmSystem.Calendars;
+using AtmSystem.Formatters;
 using AtmSystem.Printers;
 using AtmSystem.TransactionRepositories;
 using Moq;

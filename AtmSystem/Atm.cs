@@ -1,5 +1,5 @@
 ﻿using AtmSystem.Calendars;
-using AtmSystem.Printers;
+using AtmSystem.Formatters;
 using AtmSystem.TransactionRepositories;
 
 namespace AtmSystem;
