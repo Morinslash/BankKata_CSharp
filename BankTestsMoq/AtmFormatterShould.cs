@@ -34,7 +34,23 @@ public class AtmFormatterShould
         _atmFormatter.Print(bankTransactions);
         _printerMock.Verify(mock => mock.Print(
             "Date || Amount || Balance \n" +
-            "14/01/2012 || 100 || 100 \n"
+            "14/01/2012 || 100 || 100"
             ));
+    }
+    
+    [Fact]
+    public void Invoke_Printer_With_Two_Transaction_In_Descending_Order()
+    {
+        var bankTransactions = new List<BankTransaction>
+        {
+            new(){Amount = 100, TransactionDate = "13/01/2012"},
+            new(){Amount = 100, TransactionDate = "14/01/2012"}
+        };
+        _atmFormatter.Print(bankTransactions);
+        _printerMock.Verify(mock => mock.Print(
+            "Date || Amount || Balance \n" +
+            "14/01/2012 || 100 || 200 \n" +
+            "13/01/2012 || 100 || 100"
+        ));
     }
 }
