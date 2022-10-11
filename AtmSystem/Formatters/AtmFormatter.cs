@@ -2,11 +2,6 @@ using AtmSystem.Printers;
 
 namespace AtmSystem;
 
-public interface IStatementFormatter
-{
-    void Print(IEnumerable<BankTransaction> bankTransactions);
-}
-
 public class AtmFormatter : IStatementFormatter
 {
     private readonly IPrinter _printerObject;
