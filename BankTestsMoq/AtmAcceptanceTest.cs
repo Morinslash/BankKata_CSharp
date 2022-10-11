@@ -14,6 +14,13 @@ public class AtmAcceptanceTest
     {
         Mock<IPrinter> mockPrinter = new Mock<IPrinter>();
         Mock<ICalendar> mockCalendar = new Mock<ICalendar>();
+        mockCalendar
+            .SetupSequence(c => c.TransactionDate())
+            .Returns("10/01/2012")
+            .Returns("13/01/2012")
+            .Returns("14/01/2012");
+
+
         ITransactionRepository repository = new InMemoryRepository();
         var statementFormatter = new AtmFormatter(mockPrinter.Object);
         var atm = new Atm(statementFormatter, repository, mockCalendar.Object);
@@ -27,6 +34,6 @@ public class AtmAcceptanceTest
             "Date || Amount || Balance \n" +
             "14/01/2012 || -500 || 2500 \n" +
             "13/01/2012 || 2000 || 3000 \n" +
-            "10/01/2012 || 1000 || 1000 \n"), Times.Once);
+            "10/01/2012 || 1000 || 1000"), Times.Once);
     }
 }

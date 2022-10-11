@@ -18,11 +18,12 @@ public class AtmFormatter : IStatementFormatter
         var output = new StringBuilder(Header);
         var balance = 0;
         output.Append(string.Join(" \n", bankTransactions
-            .Select(trans => (Transaction: trans, Balance: balance+=trans.Amount))
-            .OrderByDescending(tran => DateOnly.Parse(tran.Transaction.TransactionDate!))
-            .Select(trans => FormatTransaction(trans.Transaction, trans.Balance))));
+            .Select(t => (Transaction: t, Balance: balance += t.Amount))
+            .OrderByDescending(t => DateOnly.Parse(t.Transaction.TransactionDate!))
+            .Select(t => FormatTransaction(t.Transaction, t.Balance))));
         _printerObject.Print(output.ToString());
     }
 
-    private string FormatTransaction(BankTransaction transaction, int balance) => $"{transaction.TransactionDate} || {transaction.Amount} || {balance}";
+    private string FormatTransaction(BankTransaction transaction, int balance) =>
+        $"{transaction.TransactionDate} || {transaction.Amount} || {balance}";
 }
